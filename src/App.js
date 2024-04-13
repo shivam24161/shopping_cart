@@ -9,13 +9,11 @@ import { Login } from './Login';
 import Signup from './Signup';
 
 function App() {
-
   const [storeProducts,setstoreProducts]=useState([]);
   const [userDetail,setuserDetail]=useState([]);
   const [loggedin,setloggedin]=useState(false);
   const [userEmail,setuserEmail]=useState('');
   const [flag,setflag]=useState("none");
-  const [searchProduct,setsearchProduct]=useState([]);
   const [product,setProducts]=useState([]);
 
   // Adding to cart
@@ -31,6 +29,7 @@ function App() {
       if(i.id === id){
         flag=1;
       }
+      return null;
     })
     if(flag === 1){
       alert("Product already exist in your cart!");
@@ -47,15 +46,9 @@ function App() {
     let password=document.querySelector("#password").value;
     let mobile=document.querySelector("#mobile").value;
 
-    var filter = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; 
-
     if(name === "" || email === "" || mobile === "" || password === ""){
       alert("Please provide the input");
     }
-    else if(!filter.test(email)){
-      alert('Please provide a valid email address!');
-    }
-
     else if(!isNaN(name)){
       alert("Please provide valid name!");
     }
@@ -116,6 +109,7 @@ function App() {
         i.total = i.quantity * i.price;
         setstoreProducts([...storeProducts]);
       }
+      return null;
     })
   }
 
@@ -130,6 +124,7 @@ function App() {
         setstoreProducts([...storeProducts]);
       }
     }
+    return null;
     })
   }
 
@@ -171,6 +166,7 @@ const search=(event)=>{
       temp.push(i);
       setProducts(temp);
     }
+    return null;
   })
 }
 
@@ -196,7 +192,7 @@ useEffect(()=>{
     <>
     <Navbar userName={userEmail} cartLen={storeProducts} logout={userLogout} search={search} select={select}/>
       <Routes>
-          <Route path="/" element={<Home data={product} add={addToCart} search={searchProduct} />}/>
+          <Route path="/" element={<Home data={product} add={addToCart}/>}/>
           <Route path='/cart' element={<Cart cartArray={storeProducts} increase={Increase} decrease={Decrease} del={deleteItems} userCheckout={checkout} flag1={flag} generate={generateBill}/>}/>
           <Route path="/login" element={<Login login={userLogin} checkLoggedIn={loggedin}/>}/>
           <Route path="/signup" element={<Signup signup={userSignup}/>}/>
